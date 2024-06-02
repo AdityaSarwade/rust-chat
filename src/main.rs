@@ -12,6 +12,7 @@ use rocket::{
     },
     Shutdown, State,
 };
+mod jokes;
 
 #[get("/health-check")]
 fn health_check() -> &'static str {
@@ -29,9 +30,15 @@ struct Message {
 }
 
 #[post("/message", data = "<form>")]
-fn post(form: Form<Message>, queue: &State<Sender<Message>>) {
+async fn post(form: Form<Message>, queue: &State<Sender<Message>>) {
     // A send fails if there are no active subscribers. This is ok.
-    let _res = queue.send(form.into_inner());
+    let mut msg: Message = form.into_inner();
+    if msg.message.starts_with("/chuck") {
+        msg.message = jokes::get_random_joke().await;
+        let _res = queue.send(msg);
+    } else {
+        let _res = queue.send(msg);
+    }
 }
 
 #[get("/events")]

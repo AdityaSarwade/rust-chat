@@ -5,6 +5,7 @@ edition = "2021"
 
 [dependencies]
 rocket = { version = "0.5.1", features = ["json"] }
+reqwest = { version = "0.12.4", features = ["json"] }
 
 [dev-dependencies]
 rand = { version = "0.8.5" }
