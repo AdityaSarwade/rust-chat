@@ -34,7 +34,9 @@ async fn post(form: Form<Message>, queue: &State<Sender<Message>>) {
     // A send fails if there are no active subscribers. This is ok.
     let mut msg: Message = form.into_inner();
     if msg.message.starts_with("/chuck") {
-        if msg.message.starts_with("/chuck cat") {
+        if msg.message.starts_with("/chuck help") {
+            msg.message = jokes::get_help();
+        } else if msg.message.starts_with("/chuck cat") {
             msg.message = jokes::get_categories().await;
         } else {
             msg.message = jokes::get_random_joke().await;

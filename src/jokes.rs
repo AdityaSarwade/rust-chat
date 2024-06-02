@@ -24,6 +24,10 @@ async fn fetch_api_response<T: DeserializeOwned>(endpoint: &str) -> reqwest::Res
     return Ok(result);
 }
 
+pub fn get_help() -> String {
+    return String::from("/chuck help - get help\n /chuck - random chuck norris Joke\n /chuck cat - get categories\n");
+}
+
 // #[tokio::main]
 pub async fn get_random_joke() -> String {
     let request_url: String = format!(
