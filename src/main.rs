@@ -36,6 +36,12 @@ async fn post(form: Form<Message>, queue: &State<Sender<Message>>) {
     if msg.message.starts_with("/chuck") {
         if msg.message == ("/chuck help") {
             msg.message = jokes::get_help();
+        } else if msg.message.starts_with("/chuck @") {
+            let name: String = msg
+                .message
+                .trim_start_matches("/chuck @")
+                .to_string();
+            msg.message = jokes::get_random_joke_from_name(name).await;
         } else if msg.message.starts_with("/chuck cat") {
             if msg.message == ("/chuck cat") {
                 msg.message = jokes::get_categories().await;
