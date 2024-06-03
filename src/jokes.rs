@@ -28,7 +28,15 @@ async fn fetch_api_response<T: DeserializeOwned>(endpoint: &str) -> reqwest::Res
 }
 
 pub fn get_help() -> String {
-    return String::from("/chuck help - get help\n /chuck - random chuck norris Joke\n /chuck cat - get categories\n /chuck @<name> - personalized chuck norris joke\n /chuck @<name> cat <categories> - personalized chuck norris joke");
+    return String::from(
+        "<ul>
+<li><b style='color: #ffbb33;'>/chuck help</b> - get help</li>
+<li><b style='color: #ffbb33;'>/chuck</b> - random chuck norris Joke</li>
+<li><b style='color: #ffbb33;'>/chuck cat</b> - get categories</li>
+<li><b style='color: #ffbb33;'>/chuck @[name]</b> - personalized chuck norris joke</li>
+<li><b style='color: #ffbb33;'>/chuck @[name] cat [categories]</b> - personalized chuck norris joke</li>
+</ul>",
+    );
 }
 
 // #[tokio::main]

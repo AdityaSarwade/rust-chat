@@ -81,7 +81,7 @@ function addMessage(room, username, message, push = false) {
 		node.querySelector(".message .username").textContent = username;
 		node.querySelector(".message .username").style.color =
 			hashColor(username);
-		node.querySelector(".message .text").textContent = message;
+		node.querySelector(".message .text").innerHTML = message;
 		messagesDiv.appendChild(node);
 	}
 }
