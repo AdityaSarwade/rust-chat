@@ -31,36 +31,48 @@ struct Message {
 
 #[post("/message", data = "<form>")]
 async fn post(form: Form<Message>, queue: &State<Sender<Message>>) {
-    // A send fails if there are no active subscribers. This is ok.
     let mut msg: Message = form.into_inner();
-    if msg.message.starts_with("/chuck") {
-        if msg.message == ("/chuck help") {
-            msg.message = jokes::get_help();
-        } else if msg.message.starts_with("/chuck @") {
-            let name: String = msg
-                .message
-                .trim_start_matches("/chuck @")
-                .to_string();
-            msg.message = jokes::get_random_joke_from_name(name).await;
-        } else if msg.message.starts_with("/chuck cat") {
-            if msg.message == ("/chuck cat") {
-                msg.message = jokes::get_categories().await;
-            } else {
-                let categories: String = msg
-                    .message
-                    .trim_start_matches("/chuck cat ")
-                    .to_string()
-                    .chars()
-                    .filter(|c| !c.is_whitespace())
-                    .collect();
-                msg.message = jokes::get_random_joke_from_categories(categories).await;
+
+    async fn handle_chuck_command(command: &str) -> String {
+        match command {
+            "/chuck help" => jokes::get_help(),
+            "/chuck" => jokes::get_random_joke().await,
+            _ if command.starts_with("/chuck @") => {
+                let parts: Vec<&str> = command.split_whitespace().collect();
+                if parts.len() == 2 {
+                    let name = parts[1].trim_start_matches('@');
+                    jokes::get_random_joke_from_name(name.to_string()).await
+                } else if parts.len() > 3 && parts[2] == "cat" {
+                    let name = parts[1].trim_start_matches('@');
+                    let categories: String = parts[3..].join(",");
+                    jokes::get_random_joke_from_name_and_categories(name.to_string(), categories)
+                        .await
+                } else {
+                    "Invalid command format. Use /chuck help for the list of commands.".to_string()
+                }
             }
-        } else {
-            msg.message = jokes::get_random_joke().await;
+            _ if command.starts_with("/chuck cat") => {
+                let categories: String = command
+                    .trim_start_matches("/chuck cat")
+                    .split_whitespace()
+                    .collect();
+                if categories.is_empty() {
+                    jokes::get_categories().await
+                } else {
+                    jokes::get_random_joke_from_categories(categories).await
+                }
+            }
+            _ => "Invalid command format. Use /chuck help for the list of commands.".to_string(),
         }
-        let _res = queue.send(msg);
-    } else {
-        let _res = queue.send(msg);
+    }
+
+    if msg.message.starts_with("/chuck") {
+        msg.message = handle_chuck_command(&msg.message).await;
+    }
+
+    // Attempt to send the message and handle potential failure.
+    if let Err(e) = queue.send(msg) {
+        eprintln!("Failed to send message: {:?}", e);
     }
 }
 

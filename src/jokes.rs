@@ -28,7 +28,7 @@ async fn fetch_api_response<T: DeserializeOwned>(endpoint: &str) -> reqwest::Res
 }
 
 pub fn get_help() -> String {
-    return String::from("/chuck help - get help\n /chuck - random chuck norris Joke\n /chuck cat - get categories\n /chuck @name - personalized chuck norris joke");
+    return String::from("/chuck help - get help\n /chuck - random chuck norris Joke\n /chuck cat - get categories\n /chuck @<name> - personalized chuck norris joke\n /chuck @<name> cat <categories> - personalized chuck norris joke");
 }
 
 // #[tokio::main]
@@ -86,12 +86,31 @@ pub async fn get_random_joke_from_categories(categories: String) -> String {
         }
     }
 }
+
 pub async fn get_random_joke_from_name(name: String) -> String {
     let request_url: String = format!(
         "{base}{endpoint}{queryParams}",
         base = CHUCKNORRIS_BASE_URL,
         endpoint = CHUCKNORRIS_RANDOM_ENDPOINT,
         queryParams = format!("?name={}", name)
+    );
+    println!("{}", request_url);
+
+    match fetch_api_response::<RandomJokeResult>(&request_url).await {
+        Ok(result) => result.value,
+        Err(e) => {
+            error!("{}", e);
+            "Chuck Norris so powerful you failed, Try Again".to_string()
+        }
+    }
+}
+
+pub async fn get_random_joke_from_name_and_categories(name: String, categories: String) -> String {
+    let request_url: String = format!(
+        "{base}{endpoint}{queryParams}",
+        base = CHUCKNORRIS_BASE_URL,
+        endpoint = CHUCKNORRIS_RANDOM_ENDPOINT,
+        queryParams = format!("?name={}?category{}", name, categories)
     );
     println!("{}", request_url);
 
