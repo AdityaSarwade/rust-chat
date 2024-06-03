@@ -12,7 +12,7 @@ let usernameField = newMessageForm.querySelector("#username");
 let roomNameField = newRoomForm.querySelector("#name");
 
 var STATE = {
-	room: "lobby",
+	room: "ChatRoom 1",
 	rooms: {},
 	connected: false,
 };
