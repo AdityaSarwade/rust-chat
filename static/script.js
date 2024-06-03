@@ -133,16 +133,21 @@ function setConnectedStatus(status) {
 // Let's go! Initialize the world.
 function init() {
 	// Initialize some rooms.
-	addRoom("lobby");
-	addRoom("rocket");
-	changeRoom("lobby");
+	addRoom("ChatRoom 1");
+	addRoom("ChatRoom 2");
+	changeRoom("ChatRoom 1");
 	addMessage(
-		"lobby",
-		"Rocket",
+		"ChatRoom 1",
+		"Assistant",
 		"Hey! Open another browser tab, send a message.",
 		true
 	);
-	addMessage("rocket", "Rocket", "This is another room. Neat, huh?", true);
+	addMessage(
+		"ChatRoom 2",
+		"Assistant",
+		"This is another room. Create your own too!",
+		true
+	);
 
 	// Set up the form handler.
 	newMessageForm.addEventListener("submit", (e) => {
@@ -175,7 +180,7 @@ function init() {
 
 		addMessage(
 			room,
-			"Rocket",
+			"Assistant",
 			`Look, your own "${room}" room! Nice.`,
 			true
 		);
