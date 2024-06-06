@@ -1,4 +1,5 @@
 pub(self) mod jokes;
+pub(self) mod models;
 
 pub async fn handle_chuck_command(command: &str) -> String {
     match command {
