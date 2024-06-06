@@ -118,7 +118,7 @@ pub async fn get_random_joke_from_name_and_categories(name: String, categories: 
         "{base}{endpoint}{queryParams}",
         base = CHUCKNORRIS_BASE_URL,
         endpoint = CHUCKNORRIS_RANDOM_ENDPOINT,
-        queryParams = format!("?name={}?category{}", name, categories)
+        queryParams = format!("?name={}&category={}", name, categories)
     );
     println!("{}", request_url);
 

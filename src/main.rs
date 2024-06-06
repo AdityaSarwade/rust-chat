@@ -1,7 +1,7 @@
 mod api;
-mod jokes;
 mod models;
 mod repository;
+mod plugins;
 
 #[macro_use]
 extern crate rocket;
