@@ -1,26 +1,11 @@
+use crate::plugins::chuck_norris::models::{CategoriesResult, RandomJokeResult};
 use reqwest;
 use rocket::error;
-use rocket::serde::{Deserialize, DeserializeOwned};
+use rocket::serde::DeserializeOwned;
 
 pub const CHUCKNORRIS_BASE_URL: &str = "https://api.chucknorris.io/jokes";
 pub const CHUCKNORRIS_RANDOM_ENDPOINT: &str = "/random";
 pub const CHUCKNORRIS_CATEGORIES_ENDPOINT: &str = "/categories";
-
-#[derive(Debug, Deserialize)]
-#[serde(crate = "rocket::serde")]
-struct RandomJokeResult {
-    // categories: Vec<String>,
-    // created_at: String,
-    // icon_url: String,
-    // id: String,
-    // updated_at: String
-    // url: String,
-    value: String,
-}
-
-#[derive(Clone, Debug, Deserialize)]
-#[serde(crate = "rocket::serde")]
-struct CategoriesResult(Vec<String>);
 
 async fn fetch_api_response<T: DeserializeOwned>(endpoint: &str) -> reqwest::Result<T> {
     let result = reqwest::get(endpoint).await?.json::<T>().await?;
@@ -118,7 +103,7 @@ pub async fn get_random_joke_from_name_and_categories(name: String, categories: 
         "{base}{endpoint}{queryParams}",
         base = CHUCKNORRIS_BASE_URL,
         endpoint = CHUCKNORRIS_RANDOM_ENDPOINT,
-        queryParams = format!("?name={}?category{}", name, categories)
+        queryParams = format!("?name={}&category={}", name, categories)
     );
     println!("{}", request_url);
 
