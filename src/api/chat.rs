@@ -10,11 +10,6 @@ use rocket::{
     Shutdown, State,
 };
 
-#[get("/health-check")]
-pub fn health_check() -> &'static str {
-    "Server is Online."
-}
-
 #[post("/message", data = "<form>")]
 pub async fn post(form: Form<Message>, queue: &State<Sender<Message>>) {
     let mut msg: Message = form.into_inner();
