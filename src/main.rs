@@ -6,7 +6,8 @@ mod repository;
 #[macro_use]
 extern crate rocket;
 
-use crate::models::message_model::Message;
+use api::chat::health_check;
+use models::message_model::Message;
 use rocket::{
     form::Form,
     fs::{relative, FileServer},
@@ -17,11 +18,6 @@ use rocket::{
     },
     Shutdown, State,
 };
-
-#[get("/health-check")]
-fn health_check() -> &'static str {
-    "Server is Online."
-}
 
 #[post("/message", data = "<form>")]
 async fn post(form: Form<Message>, queue: &State<Sender<Message>>) {
