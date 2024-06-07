@@ -12,6 +12,7 @@ use crate::api::{
     chat::{events, post},
     health_check::health_check,
 };
+use crate::auth::constants::{UNAUTHORIZED, UNKNOWN};
 use crate::errors::error_responses::{
     ErrorResponse, NOT_FOUND_JSON, UNAUTHORIZED_JSON, UNKNOWN_JSON,
 };
