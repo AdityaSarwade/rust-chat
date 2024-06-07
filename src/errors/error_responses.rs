@@ -32,12 +32,12 @@ pub const USER_NOT_FOUND_JSON: ErrorResponse = ErrorResponse {
 // registration error
 pub const ERROR_WEAK_PASSWORD_STATUS: Status = Status::BadRequest;
 pub const WEAK_PASSWORD_JSON: ErrorResponse = ErrorResponse {
-    cause: "Week password",
+    cause: "Weak password",
 };
 
-pub const ERROR_WEAK_LOGIN_STATUS: Status = Status::BadRequest;
-pub const WEAK_LOGIN_JSON: ErrorResponse = ErrorResponse {
-    cause: "Weak login",
+pub const ERROR_WEAK_USERNAME_STATUS: Status = Status::BadRequest;
+pub const WEAK_USERNAME_JSON: ErrorResponse = ErrorResponse {
+    cause: "Weak username",
 };
 
 pub const ERROR_WRONG_MAIL_STATUS: Status = Status::BadRequest;
@@ -46,8 +46,8 @@ pub const WRONG_MAIL_JSON: ErrorResponse = ErrorResponse {
 };
 
 pub const ERROR_ALREADY_REGISTERED_STATUS: Status = Status::BadRequest;
-pub const ALREADY_REGISTERED_LOGIN_JSON: ErrorResponse = ErrorResponse {
-    cause: "Already registered by login",
+pub const ALREADY_REGISTERED_USERNAME_JSON: ErrorResponse = ErrorResponse {
+    cause: "Already registered by username",
 };
 pub const ALREADY_REGISTERED_EMAIL_JSON: ErrorResponse = ErrorResponse {
     cause: "Already registered by email",

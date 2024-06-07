@@ -1,9 +1,9 @@
 use crate::errors::error_responses::{
-    ErrorResponse, ALREADY_REGISTERED_EMAIL_JSON, ALREADY_REGISTERED_LOGIN_JSON,
+    ErrorResponse, ALREADY_REGISTERED_EMAIL_JSON, ALREADY_REGISTERED_USERNAME_JSON,
     ERROR_ALREADY_REGISTERED_STATUS, ERROR_NOT_FOUND_STATUS, ERROR_UNAUTHORIZED_STATUS,
-    ERROR_UNKNOWN_STATUS, ERROR_WEAK_LOGIN_STATUS, ERROR_WEAK_PASSWORD_STATUS,
+    ERROR_UNKNOWN_STATUS, ERROR_WEAK_USERNAME_STATUS, ERROR_WEAK_PASSWORD_STATUS,
     ERROR_WRONG_FIRST_NAME_STATUS, ERROR_WRONG_LAST_NAME_STATUS, ERROR_WRONG_MAIL_STATUS,
-    ERROR_WRONG_REQUEST_STATUS, NOT_FOUND_JSON, UNAUTHORIZED_JSON, UNKNOWN_JSON, WEAK_LOGIN_JSON,
+    ERROR_WRONG_REQUEST_STATUS, NOT_FOUND_JSON, UNAUTHORIZED_JSON, UNKNOWN_JSON, WEAK_USERNAME_JSON,
     WEAK_PASSWORD_JSON, WRONG_FIRST_NAME_JSON, WRONG_LAST_NAME_JSON, WRONG_MAIL_JSON,
     WRONG_REQUEST_JSON,
 };
@@ -18,8 +18,8 @@ pub struct LenText {
     pub(crate) max: usize,
 }
 
-//min && max len login
-pub const LEN_LOGIN: LenText = LenText { min: 2, max: 200 };
+//min && max len username
+pub const LEN_USERNAME: LenText = LenText { min: 2, max: 200 };
 
 //min && max len password
 pub const LEN_PASSWORD: LenText = LenText { min: 8, max: 200 };
@@ -37,9 +37,9 @@ pub const WRONG_REQUEST: (Status, Json<ErrorResponse>) =
 pub const WRONG_MAIL: (Status, Json<ErrorResponse>) =
     (ERROR_WRONG_MAIL_STATUS, Json(WRONG_MAIL_JSON));
 
-pub const ALREADY_REGISTERED_LOGIN: (Status, Json<ErrorResponse>) = (
+pub const ALREADY_REGISTERED_USERNAME: (Status, Json<ErrorResponse>) = (
     ERROR_ALREADY_REGISTERED_STATUS,
-    Json(ALREADY_REGISTERED_LOGIN_JSON),
+    Json(ALREADY_REGISTERED_USERNAME_JSON),
 );
 
 pub const ALREADY_REGISTERED_MAIL: (Status, Json<ErrorResponse>) = (
@@ -50,8 +50,8 @@ pub const ALREADY_REGISTERED_MAIL: (Status, Json<ErrorResponse>) = (
 pub const WEAK_PASSWORD: (Status, Json<ErrorResponse>) =
     (ERROR_WEAK_PASSWORD_STATUS, Json(WEAK_PASSWORD_JSON));
 
-pub const WEAK_LOGIN: (Status, Json<ErrorResponse>) =
-    (ERROR_WEAK_LOGIN_STATUS, Json(WEAK_LOGIN_JSON));
+pub const WEAK_USERNAME: (Status, Json<ErrorResponse>) =
+    (ERROR_WEAK_USERNAME_STATUS, Json(WEAK_USERNAME_JSON));
 
 pub const UNKNOWN: (Status, Json<ErrorResponse>) = (ERROR_UNKNOWN_STATUS, Json(UNKNOWN_JSON));
 

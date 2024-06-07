@@ -4,18 +4,29 @@ mod db;
 pub mod errors;
 mod models;
 mod plugins;
+mod private;
 
 #[macro_use]
 extern crate rocket;
 
 use crate::api::{
+    auth::{
+        delete_user::delete_user,
+        get_data_user::get_data_user,
+        hello_name::{hello_name_user, hello_world},
+        login::login,
+        patch_user::edit_user,
+        refresh_tokens::refresh_tokens,
+        registration::registration,
+    },
     chat::{events, post},
     health_check::health_check,
 };
-use crate::auth::constants::{UNAUTHORIZED, UNKNOWN};
+// use crate::auth::constants::{UNAUTHORIZED, UNKNOWN};
 use crate::errors::error_responses::{
     ErrorResponse, NOT_FOUND_JSON, UNAUTHORIZED_JSON, UNKNOWN_JSON,
 };
+use db::connect_to_db::init;
 use models::message_model::Message;
 use rocket::{
     fs::{relative, FileServer},
@@ -26,7 +37,9 @@ use rocket::{
 use rocket_cors::{AllowedOrigins, CorsOptions};
 
 #[launch]
-fn rocket() -> _ {
+async fn rocket() -> _ {
+    // Load the environment variables
+    private::load_env();
     let cors = CorsOptions::default()
         .allowed_origins(AllowedOrigins::all())
         .allowed_methods(
@@ -37,8 +50,24 @@ fn rocket() -> _ {
         )
         .allow_credentials(true);
     rocket::build()
+        .attach(init().await)
         .manage(channel::<Message>(1024).0)
-        .mount("/", routes![health_check, post, events])
+        .mount(
+            "/",
+            routes![
+                health_check,
+                post,
+                events,
+                registration,
+                login,
+                hello_name_user,
+                hello_world,
+                refresh_tokens,
+                delete_user,
+                edit_user,
+                get_data_user
+            ],
+        )
         .mount("/", FileServer::from(relative!("static")))
         .manage(cors.to_cors())
         .register(
