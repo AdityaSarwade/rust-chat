@@ -8,6 +8,8 @@ A real-time, multi-room chat application built in RUST.
 
 This application utilizes Server-Sent Events (SSE) and JavaScript's EventSource as an alternative to WebSockets. It supports automatic reconnection with exponential backoff and live connection status.
 
+This application is now secured with token based authentication.
+
 Based on Rocket's - [chat example](https://github.com/rwf2/Rocket/blob/master/examples/chat)
 
 ## :inbox_tray: Installation
@@ -21,31 +23,35 @@ To ensure Rust is installed correctly, run the following command in your termina
 ```bash
 rustc --version
 ```
+
 If the command fails, the installation was not successful.
 
 ## :hammer_and_wrench: Usage
 
 1. **Clone the Repository:**
+
 ```bash
 git clone https://github.com/yourusername/rust-chat.git
 cd rust-chat
 ```
 
-2. **Run the Application:**\
+2. **Run the Application:**
+
 Use Cargo to run the application:
 
 ```bash
 cargo run
 ```
+
 The Application will run on [http://localhost:8000](http://localhost:8000)
 
-## :triumph: Chuck Norris Jokes API Integration
+## Routes
 
-- `/chuck help` - get help
-- `/chuck` - random chuck norris Joke
-- `/chuck cat` - get categories
-- `/chuck @[name]` - personalized chuck norris joke
-- `/chuck @[name] cat [categories]` - personalized chuck norris joke
+Routes can be found in the [Routes Documentation](src/api/ROUTES.md)
+
+## :link: Plugins
+
+Plugins can be found in [Plugins Documentation](src/plugins/PLUGINS.md)
 
 ## :bulb: Planned Upgrades
 
