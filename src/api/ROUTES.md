@@ -6,6 +6,10 @@
     - [/registration](#registration)
     - [/login](#login)
     - [/refresh-token](#refresh-token)
+  - [User](#user)
+    - [(GET) /user](#get-user)
+    - [(PATCH) /user](#patch-user)
+    - [(DELETE) /user](#delete-user)
 
 ## Health Check and Testing
 
@@ -41,16 +45,16 @@ In this route the user can create an account.
 }
 ```
 
-- `username` must be unique and length login must be from 3 to 200 characters.
+- `username` must be unique and length username must be from 3 to 200 characters.
 - `password` length password must be from 8 to 200 characters and password is hashed before being saved to the database.
-- `mail` must be unique and be mail.
+- `mail` must be unique and be valid.
 - `first_name` length must be from 2 to 150 characters and this field is optional.
 - `last_name` length must be from 2 to 200 characters and this field is optional.
 
 **Response:**
 
 - Status Ok (200) -> `token` and `refresh_token` in json.
-- Status BadRequest (400) -> “Weak login” / “Weak password” / “Already registered by login” / “Bad mail”/ “Already registered by mail” / “Wrong first name”/ “Wrong last name”.
+- Status BadRequest (400) -> “Weak username” / “Weak password” / “Already registered by username” / “Bad mail”/ “Already registered by mail” / “Wrong first name”/ “Wrong last name”.
 - Status Internal Server Error (500) -> “Internal Server Error”.
 
 ### /login
@@ -65,9 +69,6 @@ In this route the user can log into an account.
     "password": "12345678"
 }
 ```
-
-- `username`
-- `password`
 
 **Response:**
 
@@ -95,10 +96,87 @@ body:
 }
 ```
 
-- `username`
-
 **Response:**
 
 - Status Ok (200) -> `token` and `refresh_token` in json.
 - Status Unauthorized (401) -> “Unauthorized”.
+- Status Internal Server Error (500) -> “Internal Server Error”.
+
+## User
+
+| route | method |
+| ----- | ------ |
+| /user | GET    |
+| /user | PATCH  |
+| /user | DELETE |
+
+### (GET) /user
+
+In this route, the user can retrieve account information (except for the password).
+
+**Request:**
+
+header:
+
+```http
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoiNjY2NTQxMjlmZTY2OGEzYTI2NjdjNDg1IiwiZXhwIjoxNzE3OTE2MzU2fQ.umJRApPYz2Wbjc1yM65dfMxjBFGqZdgvcM_x_e_QnPM
+```
+
+**Response:**
+
+- Status Ok (200) -> `username`, `mail`, `id` ,`first_name` and `last_name`.
+- Status Unauthorized (401) -> “Unauthorized”.
+- Status Internal Server Error (500) -> “Internal Server Error”.
+
+### (PATCH) /user
+
+In this route, the user can modify/update account information.
+
+**Request:**
+
+header:
+
+```http
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoiNjY2NTQxMjlmZTY2OGEzYTI2NjdjNDg1IiwiZXhwIjoxNzE3OTE2MzU2fQ.umJRApPYz2Wbjc1yM65dfMxjBFGqZdgvcM_x_e_QnPM
+```
+
+body:
+
+```json
+{
+    "username": "test",
+    "mail": "test@gmail.com",
+    "first_name": "test",
+    "last_name": ""
+}
+```
+
+- `username` must be unique and length username must be from 3 to 200 characters.
+- `mail` must be unique and valid.
+- `first_name` length must be from 2 to 150 characters and this field is optional.
+- `last_name` length must be from 2 to 200 characters and this field is optional.
+
+**Response:**
+
+- Status Ok (200).
+- Status BadRequest (400) -> “Weak username” / “Already registered by username” / “Bad mail”/ “Already registered by mail” / “Wrong first name”/ “Wrong last name”.
+- Status Unauthorized (401) -> “Unauthorized”.
+- Status Internal Server Error (500) -> “Internal Server Error”.
+
+### (DELETE) /user
+
+In this route, the user can delete the account.
+
+**Request:**
+
+header:
+
+```http
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoiNjY2NTQxMjlmZTY2OGEzYTI2NjdjNDg1IiwiZXhwIjoxNzE3OTE2MzU2fQ.umJRApPYz2Wbjc1yM65dfMxjBFGqZdgvcM_x_e_QnPM
+```
+
+**Response:**
+
+- Status No content (204).
+- Status Unauthorized (401) -> “Unauthorized”
 - Status Internal Server Error (500) -> “Internal Server Error”.
