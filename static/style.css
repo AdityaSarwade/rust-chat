@@ -187,3 +187,9 @@ form button {
 	background-color: red;
 	color: #fff;
 }
+
+#auth form {
+	display: block;
+	overflow-x: scroll;
+	border-top: 2px solid #242424;
+}

@@ -11,11 +11,99 @@ let messageField = newMessageForm.querySelector("#message");
 let usernameField = newMessageForm.querySelector("#username");
 let roomNameField = newRoomForm.querySelector("#name");
 
+let loginForm = document.getElementById("login-form");
+let registerForm = document.getElementById("register-form");
+let logoutButton = document.getElementById("logout-button");
+
 var STATE = {
 	room: "ChatRoom 1",
 	rooms: {},
 	connected: false,
+	token: null,
 };
+
+// Handle registration
+registerForm.addEventListener("submit", async (e) => {
+	e.preventDefault();
+	const username = document.getElementById("register-username").value;
+	const password = document.getElementById("register-password").value;
+	const mail = document.getElementById("register-mail").value;
+
+	const response = await fetch("/registration", {
+		method: "POST",
+		headers: { "Content-Type": "application/json" },
+		body: JSON.stringify({ username, password, mail }),
+	});
+
+	if (response.ok) {
+		alert("Registration successful! Please log in.");
+	} else {
+		alert("Registration failed.");
+	}
+});
+
+// Handle login
+loginForm.addEventListener("submit", async (e) => {
+	e.preventDefault();
+	const username = document.getElementById("login-username").value;
+	const password = document.getElementById("login-password").value;
+
+	const response = await fetch("/login", {
+		method: "POST",
+		headers: { "Content-Type": "application/json" },
+		body: JSON.stringify({ username, password }),
+	});
+
+	if (response.ok) {
+		const data = await response.json();
+		STATE.token = data.token;
+		localStorage.setItem("token", STATE.token);
+		toggleAuthForms(true);
+	} else {
+		alert("Login failed.");
+	}
+});
+
+// Handle logout
+logoutButton.addEventListener("click", () => {
+	STATE.token = null;
+	localStorage.removeItem("token");
+	toggleAuthForms(false);
+});
+
+// Toggle auth forms visibility
+function toggleAuthForms(isLoggedIn) {
+	if (isLoggedIn) {
+		loginForm.style.display = "none";
+		registerForm.style.display = "none";
+		logoutButton.style.display = "block";
+	} else {
+		loginForm.style.display = "block";
+		registerForm.style.display = "block";
+		logoutButton.style.display = "none";
+	}
+}
+
+// Initialize auth state from local storage
+function initAuth() {
+	const token = localStorage.getItem("token");
+	if (token) {
+		STATE.token = token;
+		toggleAuthForms(true);
+		subscribe("/events");
+	} else {
+		toggleAuthForms(false);
+	}
+}
+
+// Modify fetch function to include token
+function authFetch(url, options = {}) {
+	options.headers = {
+		...options.headers,
+		Authorization: `Bearer ${STATE.token}`,
+	};
+	return fetch(url, options);
+}
 
 // Generate a color from a "hash" of a string. Thanks, internet.
 function hashColor(str) {
