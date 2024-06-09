@@ -1,5 +1,12 @@
 # Routes
 
+- [Routes](#routes)
+  - [Health Check and Testing](#health-check-and-testing)
+  - [Auth](#auth)
+    - [/registration](#registration)
+    - [/login](#login)
+    - [/refresh-token](#refresh-token)
+
 ## Health Check and Testing
 
 | route          | method |
