@@ -12,6 +12,20 @@
       <div id="sidebar">
         <div id="status" class="pending"></div>
 
+        <div id="auth">
+          <form id="login-form">
+            <input type="text" id="login-username" placeholder="Username" required>
+            <input type="password" id="login-password" placeholder="Password" required>
+            <button type="submit">Login</button>
+          </form>
+          <form id="register-form">
+            <input type="text" id="register-username" placeholder="Username" required>
+            <input type="password" id="register-password" placeholder="Password" required>
+            <button type="submit">Register</button>
+          </form>
+          <button id="logout-button" style="display: none;">Logout</button>
+        </div>
+
         <div id="room-list">
           <template id="room">
             <button class="room"></button>
