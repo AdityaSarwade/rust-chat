@@ -2,6 +2,9 @@
 
 - [Routes](#routes)
   - [Health Check and Testing](#health-check-and-testing)
+  - [Chat](#chat)
+    - [/events](#events)
+    - [/message](#message)
   - [Auth](#auth)
     - [/registration](#registration)
     - [/login](#login)
@@ -20,6 +23,35 @@
 | /private/hello | GET    |
 
 /private/hello requires Authorization token in the header.
+
+## Chat
+
+| route    | method |
+| -------- | ------ |
+| /events  | GET    |
+| /message | GET    |
+
+### /events
+
+In this route the user can connect to the Server using [EventSource](https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events/Using_server-sent_events) to listen for Server Sent Events.
+
+### /message
+
+In this route the user can send a message.
+
+**Request:**
+
+```json
+{
+    "username": "guest",
+    "room": "ChatRoom 1",
+    "message": "test message"
+}
+```
+
+- `username` must be a String of upto 19 characters.
+- `room` must be a String of upto 29 characters.
+- `message` must be String.
 
 ## Auth
 
