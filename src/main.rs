@@ -40,18 +40,23 @@ use rocket_cors::{AllowedOrigins, CorsOptions};
 async fn rocket() -> _ {
     // Load the environment variables
     private::load_env();
-    let cors = CorsOptions::default()
-        .allowed_origins(AllowedOrigins::all())
-        .allowed_methods(
-            vec![Method::Get, Method::Post, Method::Patch, Method::Delete]
-                .into_iter()
-                .map(From::from)
-                .collect(),
-        )
-        .allow_credentials(true);
+    // Configure CORS
+    let cors = CorsOptions {
+        allowed_origins: AllowedOrigins::all(),
+        allowed_methods: vec![Method::Get, Method::Post, Method::Patch, Method::Delete]
+            .into_iter()
+            .map(From::from)
+            .collect(),
+        allow_credentials: true,
+        ..Default::default()
+    }
+    .to_cors()
+    .expect("error creating CORS fairing");
+
     rocket::build()
         .attach(init().await)
         .manage(channel::<Message>(1024).0)
+        .attach(cors)
         .mount(
             "/",
             routes![
@@ -69,7 +74,6 @@ async fn rocket() -> _ {
             ],
         )
         .mount("/", FileServer::from(relative!("static")))
-        .manage(cors.to_cors())
         .register(
             "/",
             catchers![unauthorized, not_found, internal_sever_error,],
